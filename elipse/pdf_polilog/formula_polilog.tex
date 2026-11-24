@@ -1,0 +1,263 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.16}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{teorema}{Teorema}
+\newtheorem{proposicao}[teorema]{Proposição}
+\newtheorem{lema}[teorema]{Lema}
+\theoremstyle{remark}
+\newtheorem{observacao}[teorema]{Observação}
+
+\title{Uma aproximação para o perímetro da elipse\\ via números de Catalan e polilogaritmos}
+\author{}
+\date{Novembro de 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Os coeficientes da série de Gauss--Kummer para o perímetro da elipse são
+quadrados de números de Catalan divididos por potências de 2. A assintótica clássica
+dos números de Catalan mostra que esses coeficientes se comportam como
+$\frac{1}{4\pi n^3}\big(1+\frac{3}{4n}+\cdots\big)$, ou seja, como os
+coeficientes de uma combinação de polilogaritmos
+$\mathrm{Li}_k(h)=\sum_n h^n/n^k$. Propomos aproximar a cauda da série por
+$\sum_{k=3}^{6}g_k\,\mathrm{Li}_k(h)$. As constantes $g_k$ são determinadas por
+um sistema linear que impõe a série exata até $h^5$ e o valor exato na elipse
+degenerada. Como $\mathrm{Li}_3$ possui a mesma singularidade logarítmica
+$(1-h)^2\ln(1-h)$ do perímetro exato, a aproximação é uniformemente boa em
+todo o intervalo. O erro relativo máximo é $9{,}2\times10^{-9}$ e, para
+$b/a\ge0{,}2$, $7{,}3\times10^{-11}$. Em todos os pontos testados ela é mais
+precisa que a segunda aproximação de Ramanujan.
+\end{abstract}
+
+\section{A fórmula}
+
+Sejam $a\ge b\ge0$ os semieixos e $h=\big(\frac{a-b}{a+b}\big)^2$. A aproximação proposta é
+\begin{equation}\label{eq:formula}
+\boxed{\;
+P\approx\pi(a+b)\left[\,1+\frac h4+\frac{h^2}{64}
++\sum_{k=3}^{6}g_k\left(\mathrm{Li}_k(h)-h-\frac{h^2}{2^k}\right)\right]
+\;}
+\end{equation}
+em que $\mathrm{Li}_k(h)=\sum_{n\ge1}h^n/n^k$ é o polilogaritmo de ordem $k$. As
+constantes estão na Tabela~\ref{tab:g}.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lr}
+\toprule
+constante & valor\\
+\midrule
+$g_3$ & $0.07953808367625804$\\
+$g_4$ & $0.06062630887318473$\\
+$g_5$ & $0.03505049186615928$\\
+$g_6$ & $0.04933973528389241$\\
+\bottomrule
+\end{tabular}
+\caption{Constantes da fórmula \eqref{eq:formula}. Elas são a solução exata do
+sistema linear \eqref{eq:sistema}, e não fruto de ajuste numérico.}
+\label{tab:g}
+\end{table}
+
+Os termos $-h-h^2/2^k$ retiram de cada polilogaritmo os seus dois primeiros
+termos. Assim, os coeficientes de $h^0$, $h^1$ e $h^2$ da fórmula são exatamente
+$1$, $\tfrac14$ e $\tfrac1{64}$.
+
+\section{Dedução}
+
+\subsection{A série exata e os números de Catalan}
+
+O perímetro é $P=4aE(e)$, com $e^2=1-b^2/a^2$. A série de Gauss--Kummer dá
+\begin{equation}\label{eq:serie}
+P=\pi(a+b)\,f(h),\qquad f(h)=\sum_{n\ge0}a_nh^n,\qquad a_n=\binom{1/2}{n}^{\!2}.
+\end{equation}
+Nos extremos, $f(0)=1$ (círculo) e $f(1)=4/\pi$ (segmento, $P=4a$).
+
+\begin{lema}\label{lema:catalan}
+Seja $C_m=\frac{1}{m+1}\binom{2m}{m}$ o $m$-ésimo número de Catalan. Para $n\ge1$,
+\[
+\binom{1/2}{n}=\frac{(-1)^{n-1}\,C_{n-1}}{2^{2n-1}},
+\qquad\text{logo}\qquad
+a_n=\frac{C_{n-1}^{\,2}}{4^{\,2n-1}}.
+\]
+\end{lema}
+\begin{proof}
+Da definição,
+$\binom{1/2}{n}=\frac{1}{n!}\prod_{j=0}^{n-1}\big(\tfrac12-j\big)
+=\frac{(-1)^{n-1}}{2^n n!}\,1\cdot1\cdot3\cdot5\cdots(2n-3)$.
+Usando $1\cdot3\cdots(2n-3)=\frac{(2n-2)!}{2^{n-1}(n-1)!}$, obtemos
+$\binom{1/2}{n}=\frac{(-1)^{n-1}(2n-2)!}{2^{2n-1}\,n!\,(n-1)!}
+=\frac{(-1)^{n-1}}{2^{2n-1}}\,C_{n-1}$.
+\end{proof}
+
+Assim,
+$f(h)=1+\frac{h}{4}+\frac{h^2}{64}+\frac{h^3}{256}+\cdots$, e o
+coeficiente de $h^n$ é o quadrado de $C_{n-1}/2^{2n-1}$, um objeto
+combinatório: $C_{n-1}^2$ conta pares de caminhos de Dyck de comprimento
+$2(n-1)$.
+
+\subsection{Assintótica: o surgimento dos polilogaritmos}
+
+A fórmula de Stirling dá a assintótica clássica dos números de Catalan,
+$C_m\sim\dfrac{4^m}{\sqrt\pi\,m^{3/2}}$. Daí
+\begin{equation}\label{eq:assint}
+a_n=\frac{1}{4\pi n^3}\left(1+\frac{3}{4n}+O\!\left(\frac1{n^2}\right)\right),
+\qquad n\to\infty.
+\end{equation}
+Numericamente, $4\pi n^3a_n=1.00075\ldots$ para $n=1000$, e
+$(4\pi n^3a_n-1)\,n\to0.75$.
+
+A expansão \eqref{eq:assint} diz que, para $n$ grande, $a_n$ é uma combinação
+de potências $n^{-3},n^{-4},n^{-5},\dots$. A série cujos coeficientes são
+exatamente $n^{-k}$ é o polilogaritmo:
+\begin{equation}
+\mathrm{Li}_k(h)=\sum_{n\ge1}\frac{h^n}{n^k},\qquad \mathrm{Li}_k(1)=\zeta(k),
+\end{equation}
+em que $\zeta$ é a função zeta de Riemann. Isso motiva a aproximação da
+\emph{cauda} da série \eqref{eq:serie} por
+\begin{equation}
+\sum_{n\ge M+1}a_nh^n\;\approx\;\sum_{k=3}^{3+K}g_k\left(\mathrm{Li}_k(h)-\sum_{n=1}^{M}\frac{h^n}{n^k}\right),
+\end{equation}
+mantendo os termos $n\le M$ exatos. A fórmula \eqref{eq:formula} corresponde a
+$M=2$ e $K=3$.
+
+\subsection{A singularidade certa}
+
+O perímetro exato não é analítico em $h=1$. Usando a expansão de $E(k)$ perto
+de $k=1$, obtém-se
+\begin{equation}
+f(h)=\frac4\pi+\frac{1}{\pi}(h-1)-\frac{1}{8\pi}(1-h)^2\ln(1-h)+\cdots,
+\end{equation}
+e é por causa do termo $(1-h)^2\ln(1-h)$ que as aproximações racionais e
+algébricas, como as de Ramanujan, perdem precisão perto do segmento.
+
+\begin{proposicao}\label{prop:sing}
+Perto de $h=1$,
+$\mathrm{Li}_3(h)=\zeta(3)-\zeta(2)(1-h)-\tfrac12(1-h)^2\ln(1-h)+\cdots$, enquanto, para $k\ge4$,
+$\mathrm{Li}_k$ só tem termos logarítmicos de ordem $(1-h)^{k-1}\ln(1-h)$.
+\end{proposicao}
+\begin{proof}
+É a expansão clássica de $\mathrm{Li}_k(e^\mu)$ em torno de $\mu=0$:
+$\mathrm{Li}_k(e^\mu)=\frac{\mu^{k-1}}{(k-1)!}\big[H_{k-1}-\ln(-\mu)\big]
++\sum_{j\ne k-1}\zeta(k-j)\frac{\mu^j}{j!}$, com $\mu=\ln h\approx-(1-h)$.
+\end{proof}
+
+Portanto a combinação \eqref{eq:formula} tem, perto do segmento, o termo
+singular $-\frac{g_3}{2}(1-h)^2\ln(1-h)$. Pela assintótica \eqref{eq:assint},
+deveríamos ter $g_3\approx\frac{1}{4\pi}$, o que daria exatamente o termo
+$-\frac{1}{8\pi}(1-h)^2\ln(1-h)$ da função verdadeira. De fato,
+\[
+g_3=0.0795381\qquad\text{e}\qquad\frac1{4\pi}=0.0795775.
+\]
+A fórmula reproduz, quase sem erro, a singularidade correta. Esta é a razão de
+sua precisão uniforme.
+
+\subsection{O sistema linear}
+
+As quatro constantes $g_3,\dots,g_6$ são definidas por quatro condições:
+\begin{enumerate}
+\item \textbf{Série exata em $h^3,h^4,h^5$.} O coeficiente de $h^n$ em
+\eqref{eq:formula}, para $n\ge3$, é $\sum_k g_k\,n^{-k}$. Impomos que ele seja igual a $a_n$:
+\item[] \begin{equation}\label{eq:sistema}
+\sum_{k=3}^{6}\frac{g_k}{n^k}=a_n,\qquad n=3,4,5,
+\end{equation}
+com $a_3=\frac1{256}$, $a_4=\frac{25}{16384}$ e $a_5=\frac{49}{65536}$.
+\item \textbf{Segmento exato.} Com $h=1$ e $\mathrm{Li}_k(1)=\zeta(k)$:
+\begin{equation}
+\sum_{k=3}^{6}g_k\left(\zeta(k)-1-2^{-k}\right)=\frac4\pi-1-\frac14-\frac1{64}.
+\end{equation}
+\end{enumerate}
+A solução desse sistema $4\times4$ é a Tabela~\ref{tab:g}.
+
+\subsection{Propriedades}
+
+\begin{teorema}
+A aproximação \eqref{eq:formula}:
+\begin{enumerate}
+\item é exata no círculo ($h=0$: $P=2\pi a$) e no segmento ($h=1$: $P=4a$);
+\item coincide com a série exata \eqref{eq:serie} até o termo $h^5$, inclusive;
+\item é contínua em $[0,1]$ e tem singularidade do tipo $(1-h)^2\ln(1-h)$ em $h=1$, com coeficiente
+$-g_3/2$, a menos de $0{,}05\%$ do coeficiente exato $-1/(8\pi)$.
+\end{enumerate}
+\end{teorema}
+\begin{proof}
+(1) Em $h=0$, todos os termos com $h$ se anulam. Em $h=1$, vale por construção.
+(2) Os coeficientes de $h^0,h^1,h^2$ são exatos por construção, e os de $h^3,h^4,h^5$ pelo
+sistema \eqref{eq:sistema}.
+(3) Segue da Proposição~\ref{prop:sing}, já que $\mathrm{Li}_k$ é contínua em $[0,1]$ para $k\ge2$.
+\end{proof}
+
+\section{Verificação numérica}
+
+Comparamos com $P=4aE(e)$ calculado com 40 dígitos (\texttt{mpmath}), em 2000
+valores de $h\in[0,1]$ e em pontos com $1-h=10^{-4},\dots,10^{-17}$.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ccc}
+\toprule
+$b/a$ & erro relativo (nova) & erro relativo (Ramanujan II)\\
+\midrule
+0.9   & $2.8\times10^{-24}$ & $3.8\times10^{-18}$\\
+0.7   & $5.7\times10^{-18}$ & $7.0\times10^{-13}$\\
+0.5   & $1.3\times10^{-14}$ & $4.6\times10^{-10}$\\
+0.3   & $4.8\times10^{-12}$ & $7.4\times10^{-8}$\\
+0.2   & $7.4\times10^{-11}$ & $8.5\times10^{-7}$\\
+0.1   & $1.1\times10^{-9}$  & $1.2\times10^{-5}$\\
+0.05  & $4.5\times10^{-9}$  & $5.2\times10^{-5}$\\
+0.01  & $9.0\times10^{-9}$  & $2.4\times10^{-4}$\\
+0.001 & $2.4\times10^{-9}$  & $3.8\times10^{-4}$\\
+0     & $0$ & $4.0\times10^{-4}$\\
+\midrule
+máximo ($b/a\ge0.2$) & $7.3\times10^{-11}$ & $8.5\times10^{-7}$\\
+máximo geral & $9.2\times10^{-9}$ & $4.0\times10^{-4}$\\
+\bottomrule
+\end{tabular}
+\caption{Erro relativo (em módulo) da fórmula \eqref{eq:formula} e de Ramanujan II.}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.85\textwidth, height=7cm,
+  xlabel={$b/a$}, ylabel={erro relativo $|\,\cdot\,|$},
+  ymode=log, ymin=1e-26, ymax=1e-2, xmin=0, xmax=1,
+  legend pos=north east, grid=major]
+\addplot[blue, thick] table[x=x, y=nova] {erros.dat};
+\addlegendentry{nova (Eq.~\ref{eq:formula})}
+\addplot[red, thick, dashed] table[x=x, y=ram2] {erros.dat};
+\addlegendentry{Ramanujan II}
+\end{axis}
+\end{tikzpicture}
+\caption{Erro relativo em função de $b/a$. Perto de $b/a=1$, os dois erros
+ficam abaixo da precisão do cálculo, e as curvas são cortadas.}
+\end{figure}
+
+\section{Generalização e observações}
+
+\begin{itemize}
+\item \textbf{Família de fórmulas.} Mantendo $M$ termos exatos e usando $K+1$
+polilogaritmos ($\mathrm{Li}_3,\dots,\mathrm{Li}_{3+K}$), o erro máximo cai
+de forma sistemática. Por exemplo, $(M,K)=(0,2)$ dá $2{,}4\times10^{-5}$,
+$(2,3)$ dá $9{,}2\times10^{-9}$ e $(4,4)$ dá $2{,}5\times10^{-11}$.
+\item \textbf{Uso prático.} Os polilogaritmos estão disponíveis em
+Mathematica (\texttt{PolyLog}), Maple, \texttt{mpmath} (\texttt{polylog}) e
+na GSL. Não estão em calculadoras comuns.
+\item \textbf{Ineditismo.} Em buscas na literatura (novembro de 2026), não
+encontramos aproximações do perímetro da elipse baseadas em polilogaritmos ou
+na assintótica dos números de Catalan. A busca não foi exaustiva e deve ser
+complementada antes de qualquer publicação.
+\end{itemize}
+
+\end{document}
