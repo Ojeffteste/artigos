@@ -46,3 +46,22 @@ Ressalva: para elipses pouco achatadas (b/a ≳ 0.3), Ramanujan II continua muit
 O ganho destas fórmulas está no **pior caso**, ou seja, em elipses muito alongadas.
 
 Verificação numérica (mpmath, 30 dígitos, comparando com a integral elíptica completa E): `python3 verificacao.py`.
+
+## Revisão da literatura (nov/2026)
+
+**A ideia de incluir termos logarítmicos já foi publicada.** As fórmulas acima não devem ser apresentadas como uma ideia nova.
+
+- **Ayala-Raggi & Rendón-Marín (2026)**, "Approximating the Ellipse Perimeter by 'Bending the Line': The ELIP Closed-Form Family", arXiv:2610.28689.
+  - Usa núcleos do tipo `A·(1−h)^p·ln(1/(1−h))`, partindo da reta entre os valores exatos nos extremos (h = 0 e h = 1).
+  - Erros relatados de até ~0,0016 ppm (1,6·10⁻⁹), muito melhores que os destas fórmulas.
+- **Família "Underwood"**, descrita no mesmo artigo.
+  - Usa `ξ = 1−h`, potências de ξ vezes `L = ln(1/ξ)` e um ajuste de Chebyshev para a parte suave.
+  - Não localizei a fonte original.
+- **Expansão de Cayley** (século XIX) e o artigo de Lampret: séries com logaritmo para a elipse muito achatada.
+- **arXiv:2510.16191 (2025)**: correção exponencial de Ramanujan II, com erro máximo de ~0,57 ppm.
+
+O que talvez ainda seja original são as expressões específicas acima:
+- a combinação `h²(1−h)ln(1−h)`;
+- as constantes exatas `4/π − 81/64` e `4/π − 325/256` da Fórmula 1.
+
+Isso não foi confirmado: o texto completo do arXiv:2610.28689 não pôde ser lido nesta sessão.
