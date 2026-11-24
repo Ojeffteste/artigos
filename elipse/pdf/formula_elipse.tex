@@ -1,0 +1,319 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.16}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{teorema}{Teorema}
+\newtheorem{proposicao}[teorema]{Proposição}
+\newtheorem{lema}[teorema]{Lema}
+\theoremstyle{definition}
+\newtheorem{definicao}[teorema]{Definição}
+\theoremstyle{remark}
+\newtheorem{observacao}[teorema]{Observação}
+
+\newcommand{\E}{\mathbb{E}}
+
+\title{Uma aproximação para o perímetro da elipse\\ via razão de médias da distribuição qui}
+\author{}
+\date{Novembro de 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Propomos uma aproximação para o perímetro da elipse construída a partir da
+média da distribuição qui. O ponto de partida é a observação de que
+$\E[\chi_3]/\E[\chi_2] = 4/\pi$, exatamente o valor que o perímetro
+normalizado $P/(\pi(a+b))$ assume na elipse degenerada. Escrevemos o perímetro
+como uma razão de médias qui com um número efetivo de graus de liberdade
+$\nu\in[2,3]$ e determinamos esse parâmetro por um aproximante de Padé da sua
+série exata, com uma condição de contorno no extremo degenerado. A fórmula
+resultante é exata no círculo e no segmento e reproduz a série de Taylor exata até
+a ordem $h^6$. O erro relativo máximo é $1{,}2\times10^{-5}$ e, para $b/a\ge
+0{,}2$, não passa de $1{,}9\times10^{-8}$. Em todos os pontos testados ela é
+mais precisa que a segunda aproximação de Ramanujan.
+\end{abstract}
+
+\section{A fórmula}
+
+Sejam $a\ge b\ge 0$ os semieixos e
+\begin{equation}
+  h=\left(\frac{a-b}{a+b}\right)^{2}\in[0,1].
+\end{equation}
+A aproximação proposta é
+\begin{equation}\label{eq:formula}
+  \boxed{\;P\;\approx\;\pi(a+b)\,\frac{2}{\sqrt{\pi}}\,
+  \frac{\Gamma\!\left(s+\tfrac32\right)}{\Gamma(s+1)},
+  \qquad
+  s=h\,\frac{n_0+n_1h+n_2h^2+n_3h^3}{1+d_1h+d_2h^2+d_3h^3}\;}
+\end{equation}
+com as constantes da Tabela~\ref{tab:const}. Como $\Gamma(x+1)=x!$, a razão também pode ser escrita como $(s+\frac12)!/s!$.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lr}
+\toprule
+constante & valor \\
+\midrule
+$n_0$ & $\dfrac{1}{8(1-\ln 2)} = 0.4073614191588662$\\[6pt]
+$n_1$ & $-0.5017006478790753$\\
+$n_2$ & $\phantom{-}0.1280463626575522$\\
+$n_3$ & $\phantom{-}0.006629020704070353$\\
+$d_1$ & $-1.404769353861877$\\
+$d_2$ & $\phantom{-}0.5261406749235058$\\
+$d_3$ & $-0.04069901177880171$\\
+\bottomrule
+\end{tabular}
+\caption{Constantes da fórmula \eqref{eq:formula}. Nenhuma foi obtida por ajuste
+numérico. Todas saem da série exata e da condição $s(1)=\tfrac12$ (Seção~\ref{sec:pade}).}
+\label{tab:const}
+\end{table}
+
+\section{Dedução}
+
+\subsection{O perímetro exato}
+
+O perímetro é $P=4aE(e)$, em que $E$ é a integral elíptica completa de segunda
+espécie e $e^2=1-b^2/a^2$. A série de Gauss--Kummer (ou de Ivory) dá
+\begin{equation}\label{eq:serie}
+  P=\pi(a+b)\,f(h),\qquad
+  f(h)=\sum_{n=0}^{\infty}\binom{1/2}{n}^{\!2}h^{n}
+  ={}_2F_1\!\left(-\tfrac12,-\tfrac12;1;h\right),
+\end{equation}
+ou seja,
+\begin{equation}
+  f(h)=1+\frac{h}{4}+\frac{h^2}{64}+\frac{h^3}{256}+\frac{25h^4}{16384}+\cdots
+\end{equation}
+Os dois extremos são:
+\begin{itemize}
+  \item círculo ($a=b$, $h=0$): $f(0)=1$;
+  \item segmento ($b=0$, $h=1$): $P=4a$, logo $f(1)=4/\pi$. Isso também segue do
+  teorema de Gauss, ${}_2F_1(\alpha,\beta;\gamma;1)=
+  \frac{\Gamma(\gamma)\Gamma(\gamma-\alpha-\beta)}{\Gamma(\gamma-\alpha)\Gamma(\gamma-\beta)}$, que dá
+  $f(1)=\Gamma(1)\Gamma(2)/\Gamma(\tfrac32)^2=4/\pi$.
+\end{itemize}
+
+\subsection{A conexão com a distribuição qui}
+
+\begin{definicao}
+Se $Z_1,\dots,Z_\nu$ são normais padrão independentes, $\chi_\nu=\sqrt{Z_1^2+\cdots+Z_\nu^2}$
+segue a distribuição qui com $\nu$ graus de liberdade. A média dessa distribuição vale
+\begin{equation}
+  \E[\chi_\nu]=\sqrt{2}\,\frac{\Gamma\!\left(\frac{\nu+1}{2}\right)}{\Gamma\!\left(\frac{\nu}{2}\right)},
+\end{equation}
+e essa expressão faz sentido para qualquer $\nu>0$ real.
+\end{definicao}
+
+\begin{lema}\label{lema:chi}
+$\E[\chi_2]=\sqrt{\pi/2}$ e $\E[\chi_3]=2\sqrt{2/\pi}$. Portanto
+\[
+  \frac{\E[\chi_3]}{\E[\chi_2]}=\frac{4}{\pi}=f(1).
+\]
+\end{lema}
+\begin{proof}
+Basta usar $\Gamma(1)=1$, $\Gamma(\tfrac32)=\tfrac{\sqrt\pi}{2}$ e $\Gamma(2)=1$:
+$\E[\chi_2]=\sqrt2\,\Gamma(\tfrac32)/\Gamma(1)=\sqrt{\pi/2}$ e
+$\E[\chi_3]=\sqrt2\,\Gamma(2)/\Gamma(\tfrac32)=2\sqrt2/\sqrt\pi$.
+\end{proof}
+
+O lema sugere escrever o perímetro normalizado como uma razão de médias qui, com
+um número efetivo de graus de liberdade que vai de $2$ (círculo) a $3$
+(segmento). Com $\nu=2+2s$, definimos
+\begin{equation}\label{eq:Q}
+  Q(s)=\frac{\E[\chi_{2+2s}]}{\E[\chi_2]}
+      =\frac{2}{\sqrt\pi}\,\frac{\Gamma\!\left(s+\frac32\right)}{\Gamma(s+1)},
+  \qquad Q(0)=1,\quad Q\!\left(\tfrac12\right)=\frac4\pi .
+\end{equation}
+
+\begin{observacao}
+Há ainda uma identidade exata que liga o perímetro a vetores gaussianos.
+Se $X,Y$ são normais padrão independentes, então
+$P=\sqrt{8\pi}\;\E\big[\sqrt{a^2X^2+b^2Y^2}\,\big]$.
+Para ver isso, use coordenadas polares: $X=R\cos\theta$, $Y=R\sin\theta$, com $R\sim\chi_2$
+independente de $\theta$ uniforme. A média em $\theta$ dá $P/(2\pi)$, e $\E[R]=\sqrt{\pi/2}$.
+No círculo, a forma quadrática $a^2X^2+b^2Y^2$ é um $\chi^2$ escalado com 2 graus de liberdade.
+No segmento, é um $\chi^2$ com 1 grau de liberdade. Daí a ideia de graus de liberdade
+efetivos, comum na estatística (aproximação de Satterthwaite).
+\end{observacao}
+
+\subsection{O parâmetro exato \texorpdfstring{$s^*(h)$}{s*(h)}}
+
+\begin{proposicao}
+$Q$ é estritamente crescente em $s\ge0$. Logo existe uma única função
+$s^*:[0,1]\to[0,\tfrac12]$ com
+\begin{equation}
+  Q\big(s^*(h)\big)=f(h),\qquad s^*(0)=0,\quad s^*(1)=\tfrac12 .
+\end{equation}
+\end{proposicao}
+\begin{proof}
+$\dfrac{d}{ds}\ln Q(s)=\psi\!\left(s+\tfrac32\right)-\psi(s+1)>0$, porque a função
+digama $\psi$ é crescente. Além disso, $f$ é crescente com $f(0)=1=Q(0)$ e
+$f(1)=4/\pi=Q(\frac12)$.
+\end{proof}
+
+A fórmula \eqref{eq:formula} é exata quando $s=s^*(h)$. O problema se reduz,
+portanto, a aproximar a função $s^*$. Numericamente, $s^*(h)/h$ é suave e
+quase linear: cresce de $0{,}407$ em $h=0$ até $0{,}5$ em $h=1$.
+
+\subsection{Série de \texorpdfstring{$s^*$}{s*} por reversão}
+
+Expandimos $Q(s)=1+q_1s+q_2s^2+\cdots$ com
+\begin{equation}
+  q_1=\psi\!\left(\tfrac32\right)-\psi(1)=2-2\ln2,\qquad
+  q_2=\tfrac12\left[q_1^2+\psi'\!\left(\tfrac32\right)-\psi'(1)\right]
+     =\tfrac12\left[(2-2\ln 2)^2+\tfrac{\pi^2}{3}-4\right],
+\end{equation}
+em que usamos $\psi(1)=-\gamma$, $\psi(\tfrac32)=2-\gamma-2\ln2$,
+$\psi'(1)=\pi^2/6$ e $\psi'(\tfrac32)=\pi^2/2-4$.
+
+Escrevemos $s^*(h)=h\,u(h)$ com $u(h)=\sum_{k\ge0}u_kh^k$ e igualamos as
+potências de $h$ em $Q(h\,u(h))=f(h)$. A ordem $h^1$ dá
+\begin{equation}
+  q_1u_0=\frac14\;\Longrightarrow\;
+  u_0=\frac{1}{4(2-2\ln 2)}=\frac{1}{8(1-\ln2)}.
+\end{equation}
+A ordem $h^2$ dá
+\begin{equation}
+  q_1u_1+q_2u_0^2=\frac1{64}\;\Longrightarrow\;
+  u_1=\frac{1/64-q_2u_0^2}{q_1}=0.07054818970\ldots
+\end{equation}
+e assim por diante: cada ordem determina um novo coeficiente de forma linear. Os
+primeiros valores, calculados com 80 dígitos, estão na Tabela~\ref{tab:u}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{cr@{\qquad}cr}
+\toprule
+$k$ & $u_k$ & $k$ & $u_k$\\
+\midrule
+0 & 0.40736141915886618 & 4 & 0.00188568816290975\\
+1 & 0.07054818970098244 & 5 & 0.00101339718169120\\
+2 & 0.01282088550588348 & 6 & 0.00060674665484135\\
+3 & 0.00410034280477705 & 7 & 0.00039216502067914\\
+\bottomrule
+\end{tabular}
+\caption{Coeficientes da série $u(h)=s^*(h)/h=\sum u_kh^k$.}
+\label{tab:u}
+\end{table}
+
+Os coeficientes decaem devagar, porque $f$ tem uma singularidade logarítmica em
+$h=1$ (do tipo $(1-h)^2\ln(1-h)$). Por isso a série truncada converge mal perto
+do segmento, e é aí que entra o aproximante racional.
+
+\subsection{Aproximante de Padé com condição de contorno}\label{sec:pade}
+
+Aproximamos $u(h)$ por uma função racional $N(h)/D(h)$, com $N$ e $D$ cúbicos
+e $D(0)=1$. São sete incógnitas: $n_0,\dots,n_3,d_1,d_2,d_3$. Elas são
+determinadas por sete equações lineares.
+\begin{enumerate}
+  \item \textbf{Série no círculo.} Os coeficientes de $h^0,\dots,h^5$ em
+  $N(h)-D(h)\,u(h)$ devem se anular:
+  \begin{equation}
+    n_k-\sum_{j=1}^{\min(k,3)}d_j\,u_{k-j}=u_k,\qquad k=0,\dots,5,
+  \end{equation}
+  com $n_k=0$ para $k>3$.
+  \item \textbf{Segmento.} $s(1)=\tfrac12$, isto é,
+  $N(1)=\tfrac12D(1)$:
+  \begin{equation}
+    n_0+n_1+n_2+n_3-\tfrac12(d_1+d_2+d_3)=\tfrac12 .
+  \end{equation}
+\end{enumerate}
+A solução desse sistema dá as constantes da Tabela~\ref{tab:const}. Em
+particular, $n_0=u_0=1/(8(1-\ln2))$.
+
+As raízes de $D$ são $h\approx1.205$, $2.124$ e $9.598$, todas fora de $[0,1]$.
+A fórmula é, portanto, regular em todo o domínio.
+
+\subsection{Propriedades}
+
+\begin{teorema}
+A aproximação \eqref{eq:formula} satisfaz:
+\begin{enumerate}
+  \item é exata no círculo ($P=2\pi a$) e no segmento ($P=4a$);
+  \item sua série em $h$ coincide com a série exata \eqref{eq:serie} até o termo $h^6$, inclusive.
+\end{enumerate}
+\end{teorema}
+\begin{proof}
+(1) Se $h=0$, então $s=0$ e $Q(0)=1$. Se $h=1$, então $s=\tfrac12$ e $Q(\tfrac12)=4/\pi$,
+pelo Lema~\ref{lema:chi}.
+(2) Por construção, $N/D-u=O(h^6)$, logo $s-s^*=O(h^7)$. Como $Q'(0)\ne0$,
+segue que $Q(s)-f(h)=O(h^7)$.
+\end{proof}
+
+Para comparação, a segunda aproximação de Ramanujan,
+$P\approx\pi(a+b)\big(1+\frac{3h}{10+\sqrt{4-3h}}\big)$, coincide com a série
+apenas até $h^4$ e não é exata no segmento: lá ela erra $4{,}0\times10^{-4}$.
+
+\section{Verificação numérica}
+
+Comparamos a fórmula com $P=4aE(e)$, calculado com 40 dígitos significativos
+(\texttt{mpmath}), em 4000 valores de $b/a\in[0,1]$ e em valores extremos
+$b/a=10^{-4},\dots,10^{-15}$.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{ccc}
+\toprule
+$b/a$ & erro relativo (nova) & erro relativo (Ramanujan II)\\
+\midrule
+0.9  & $3\times10^{-22}$ & $3.8\times10^{-18}$\\
+0.7  & $1.5\times10^{-16}$ & $7.0\times10^{-13}$\\
+0.5  & $1.1\times10^{-12}$ & $4.6\times10^{-10}$\\
+0.4  & $3.9\times10^{-11}$ & $6.3\times10^{-9}$\\
+0.3  & $9.9\times10^{-10}$ & $7.4\times10^{-8}$\\
+0.2  & $1.9\times10^{-8}$ & $8.5\times10^{-7}$\\
+0.1  & $1.9\times10^{-7}$ & $1.2\times10^{-5}$\\
+0.05 & $8.8\times10^{-7}$ & $5.2\times10^{-5}$\\
+0.01 & $1.1\times10^{-5}$ & $2.4\times10^{-4}$\\
+0    & $0$ & $4.0\times10^{-4}$\\
+\midrule
+máximo ($b/a\ge0.2$) & $1.9\times10^{-8}$ & $8.5\times10^{-7}$\\
+máximo geral & $1.2\times10^{-5}$ & $4.0\times10^{-4}$\\
+\bottomrule
+\end{tabular}
+\caption{Erro relativo (em módulo) da fórmula \eqref{eq:formula} e de Ramanujan II.}
+\end{table}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.85\textwidth, height=7cm,
+  xlabel={$b/a$}, ylabel={erro relativo $|\,\cdot\,|$},
+  ymode=log, ymin=1e-24, ymax=1e-2, xmin=0, xmax=1,
+  legend pos=north east, grid=major]
+\addplot[blue, thick] table[x=x, y=nova] {erros.dat};
+\addlegendentry{nova (Eq.~\ref{eq:formula})}
+\addplot[red, thick, dashed] table[x=x, y=ram2] {erros.dat};
+\addlegendentry{Ramanujan II}
+\end{axis}
+\end{tikzpicture}
+\caption{Erro relativo em função de $b/a$. As quedas bruscas da curva azul são os
+pontos em que o erro troca de sinal.}
+\end{figure}
+
+\section{Observações finais}
+
+\begin{itemize}
+  \item \textbf{Precisão das constantes.} As constantes devem ser usadas com cerca de 16
+  dígitos. Arredondá-las para 10 dígitos introduz erros da ordem de $10^{-13}$ perto
+  do círculo, onde a fórmula exata é muito mais precisa que isso.
+  \item \textbf{Uso prático.} A fórmula exige a função Gama, disponível em calculadoras
+  científicas (como $x!$) e em qualquer linguagem de programação. Em uma conta à mão, é menos
+  prática que a de Ramanujan.
+  \item \textbf{Ineditismo.} Em buscas na literatura (novembro de 2026), não
+  encontramos aproximações do perímetro da elipse baseadas na função Gama, em
+  razões de fatoriais ou na distribuição qui. As famílias conhecidas são
+  racionais e de Padé, com radicais (Ramanujan), exponenciais, logarítmicas e
+  médias de potências. A busca não foi exaustiva e deve ser complementada antes
+  de qualquer publicação.
+\end{itemize}
+
+\end{document}
